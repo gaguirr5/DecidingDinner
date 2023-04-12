@@ -1,0 +1,7 @@
+.view{
+    background-image: url('https://img.freepik.com/free-photo/restaurant-interior_1127-3392.jpg?w=1060&t=st=1681243544~exp=1681244144~hmac=afdbfa0d2e0a3f3768a4a5f5dd13658d777a0f70f5c2d6ffab66ceaf3171969f');
+    height:100vh;
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center center;
+}
