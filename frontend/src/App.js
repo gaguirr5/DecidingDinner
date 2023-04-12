@@ -13,7 +13,7 @@ function App() {
         <main>
           <Navbar bg="light" expand="lg">
             <Container>
-                <Navbar.Brand href="/">Deciding Dinner</Navbar.Brand>
+                <Navbar.Brand href="/selector">Deciding Dinner</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="me-auto">
