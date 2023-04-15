@@ -1,42 +1,61 @@
 import Accordion from 'react-bootstrap/Accordion'
 import { useEffect, useState } from 'react'
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import letterIndex from './letterIndex';
 
 function Selector(){
-    const [friendList, setFrendList] = useState({})
-    const [list, setList] = useState()
+    const [friendList, setFriendList] = useState([])
     
-    function setCards(){
+    function isCharacterALetter(char) {
+      return (/[a-zA-Z]/).test(char)
+    }
 
+    function fillAccordionList(unfilteredData){
+      let accordions = [{id:'A', names:[]}, {id:'B',names:[]}, {id:'C',names:[]}, {id:'D',names:[]}, {id:'E',names:[]}, {id:'F',names:[]}, {id:'G',names:[]}, {id:'H',names:[]}, {id:'I',names:[]}, {id:'J',names:[]}, {id:'K',names:[]}, {id:'L',names:[]}, {id:'M',names:[]}, {id:'N',names:[]}, {id:'O',names:[]}, {id:'P',names:[]}, {id:'Q',names:[]}, {id:'R',names:[]}, {id:'S',names:[]}, {id:'T',names:[]}, {id:'U',names:[]}, {id:'V',names:[]}, {id:'W',names:[]}, {id:'X',names:[]}, {id:'Y',names:[]}, {id:'Z',names:[]}]
+      for(let x in unfilteredData){
+        
+        if(isCharacterALetter(unfilteredData[x].FirstName[0])){
+          let firstLetter = unfilteredData[x].FirstName[0].toUpperCase()
+          let index = letterIndex(firstLetter)
+          accordions[index].names.push(unfilteredData[x])
+        }
+        
+        
+      }
+      setCards(accordions)
+    }
+
+    function setCards(objs){
+      const newObj = []
+      for(let item in objs){
+        if(objs[item].names.length > 0){
+          newObj.push(objs[item])
+        }
+      }
+      console.log(newObj)
+      setFriendList(newObj)
     }
 
     useEffect(()=>{
-        let list = [
-            'dane', 'jeff', 'diana', 'ashley', 'benjamin'
-        ]
-        let accordions = {'A':[], 'B':[], 'C':[], 'D':[], 'E':[], 'F':[], 'G':[], 'H':[], 'I':[], 'J':[], 'K':[], 'L':[], 'M':[], 'N':[], 'O':[], 'P':[], 'Q':[], 'R':[], 'S':[], 'T':[], 'U':[], 'V':[], 'W':[], 'X':[], 'Y':[], 'Z':[]}
-
-        // let letters = list.map(function(list){
-        //     return list[0]
-        // })
-        // let uniqueList = [...new Set(letters)]
-        // setNumOfLists(uniqueList.length)
-        for(let x=0;x<list.length;x++){
-            let check = `${list[x][0]}`.toUpperCase()
-            if(check in accordions){
-                accordions[check].push(list[x])
-            }
-            
-        }
-        setFrendList(accordions)
-        list !== 0?setCards():<h2>No friends found</h2>
+      axios.get(`${process.env.REACT_APP_FETCHBASEURL}/allUsers`)
+        .then((response)=>{
+          fillAccordionList(response.data)
+          console.log('46', friendList)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+        // setCards(accordions)
+        // console.log(friendList)
     }, [])
     
     return(
         <div>
+        
         <h1>Welcome to the selector</h1>
         <div>
-            {friendList.map}
+            {friendList.map(list=><li>{list}</li>)}
         </div>
         <Accordion>
       <Accordion.Item eventKey="0">
