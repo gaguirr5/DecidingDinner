@@ -1,7 +1,7 @@
 import Home from '../Pages/Home/Home'
-import FindUsers from '../Pages/Users/findUsers'
-import CreateUser from '../Pages/Users/newUser'
-import UpdateUser from '../Pages/Users/updateUser'
+import FindUsers from '../Pages/Users/FindUsers/findUsers'
+import CreateUser from '../Pages/Users/NewUsers/newUser'
+import UpdateUser from '../Pages/Users/UpdateUsers/updateUser'
 import Selector from '../Pages/RestaurantSelector/selector'
 
 import {BrowserRouter as Router, Route, Link, Routes} from 'react-router-dom';
