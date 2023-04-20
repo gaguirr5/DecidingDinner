@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import letterIndex from './letterIndex';
+import Container from 'react-bootstrap/Container'
 
 function Selector(){
     const [friendList, setFriendList] = useState([])
@@ -19,9 +20,7 @@ function Selector(){
           let firstLetter = unfilteredData[x].FirstName[0].toUpperCase()
           let index = letterIndex(firstLetter)
           accordions[index].names.push(unfilteredData[x])
-        }
-        
-        
+        }        
       }
       setCards(accordions)
     }
@@ -30,10 +29,32 @@ function Selector(){
       const newObj = []
       for(let item in objs){
         if(objs[item].names.length > 0){
-          newObj.push(objs[item])
+          let id = objs[item].id
+          let names = objs[item].names
+          let list = <Accordion.Item eventKey="0">
+                        <Accordion.Header>{id}</Accordion.Header>
+                          <Accordion.Body>
+                              <Form key={id}>
+                                  {['checkbox'].map((type) => (
+                                      <div key={`default-${type}`} className="mb-3">
+                                        {
+                                          names.map(name => {
+                                            return <Form.Check 
+                                            type={type}
+                                            id={`default-${type}`}
+                                            label = {name.MiddleName? `${name.FirstName} ${name.MiddleName} ${name.LastName}`:`${name.FirstName} ${name.LastName}`}
+                                            
+                                          />})
+                                        }
+                                      </div>  
+                                  ))}
+                              </Form>
+                          </Accordion.Body>
+                        </Accordion.Item>
+          
+          newObj.push(list)                       
         }
       }
-      console.log(newObj)
       setFriendList(newObj)
     }
 
@@ -41,60 +62,23 @@ function Selector(){
       axios.get(`${process.env.REACT_APP_FETCHBASEURL}/allUsers`)
         .then((response)=>{
           fillAccordionList(response.data)
-          console.log('46', friendList)
         })
         .catch((err)=>{
           console.log(err)
         })
-        // setCards(accordions)
-        // console.log(friendList)
     }, [])
     
     return(
         <div>
-        
-        <h1>Welcome to the selector</h1>
-        <div>
-            {friendList.map(list=><li>{list}</li>)}
+          
+          <Container>
+            <h1>Welcome to the selector</h1>
+            {
+              friendList.map(list => <Accordion key={list}> {list} </Accordion>)
+            }
+          </Container>
+            
         </div>
-        <Accordion>
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>aye</Accordion.Header>
-        <Accordion.Body>
-          <Form>
-            {['checkbox'].map((type) => (
-                <div key={`default-${type}`} className="mb-3">
-                <Form.Check 
-                    type={type}
-                    id={`default-${type}`}
-                    label={`Name 1`}
-                />
-                <Form.Check 
-                    type={type}
-                    id={`default-${type}`}
-                    label={`name 2`}
-                />
-                </div>
-                
-            ))}
-        </Form>
-        </Accordion.Body>
-      </Accordion.Item>
-      
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>Bee</Accordion.Header>
-        <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Accordion.Body>
-      </Accordion.Item>
-    </Accordion>
-    </div>
     )
 }
 export default Selector;
