@@ -80,6 +80,13 @@ def getUsers():
     print(users)
     return jsonify(users)
 
+@app.route("/allUsersA", methods=['GET'])
+def getUsersAlphabetically():
+    sql = """SELECT * FROM users ORDER BY LastName; """
+    users = execute_read_query(cnx, sql)
+    print(users)
+    return jsonify(users)
+
 @app.route("/addUser", methods=['Post'])
 def addUser():
     request_data = request.get_json()
